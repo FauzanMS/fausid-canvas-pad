@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
 import getCursor from './cursors';
@@ -15,6 +15,10 @@ import RotateLeft from './images/rotate-ccw@3x.png';
 import RotateRight from './images/rotate-cw@3x.png';
 import submit from './images/Group 6949.png';
 import disabledSubmit from './images/disalbedSubmit.png';
+import disabledRevise from './images/disabledRevise.png';
+import sendTostudent from './images/Group 6948.png';
+import preview from './images/Group 6946.png';
+import canvasIcon from './images/Group 6947.png';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
@@ -26,9 +30,11 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import InputSlider from './components/Slider';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
+import PdfReader from '../PdfReader';
 import PDFCanvas from '../PdfCanvas';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import swal from 'sweetalert';
-import { WebsiteHeader } from '../WebsiteHeader';
 
 let drawInstance = null;
 let origX;
@@ -213,6 +219,30 @@ function createEllipse(canvas) {
     canvas.isDrawingMode = false;
     canvas.getObjects().map((item) => item.set({ selectable: false }));
     canvas.discardActiveObject().requestRenderAll();
+  }
+}
+
+function panningZoom(canvas) {
+  if (options.currentMode !== modes.PANNING) {
+    options.currentMode = modes.PANNING;
+    removeCanvasListener(canvas);
+    canvas.on('mouse:wheel', (opt) => {
+      if (!canvas.viewportTransform) {
+        return;
+      }
+      var evt = opt.e;
+      var deltaY = evt.deltaY;
+      var zoom = canvas.getZoom();
+      zoom = zoom - deltaY / 100;
+      if (zoom > 20) zoom = 20;
+      if (zoom < 0.1) zoom = 0.1;
+      canvas.zoomToPoint(new fabric.Point(evt.offsetX, evt.offsetY), zoom);
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+    });
+  } else {
+    removeCanvasListener(canvas);
+    draw(canvas);
   }
 }
 
@@ -485,7 +515,7 @@ const Whiteboard = ({
             setFiles({ ...pages, [index]: blob });
           });
           setDisableButtons(true);
-          options.currentMode='';
+          options.currentMode = '';
           setJSON({ ...canvasPage, [index]: canvas.toJSON() });
           setPages({});
           clearCanvas(canvas);
@@ -570,7 +600,7 @@ const Whiteboard = ({
     }
   }
 
-  const [pdfViewer, setPdfViewer] = React.useState(false);
+  const [pdfViewer, setPdfViewer] = React.useState(true);
 
   const toolbarCommander = (props, canvas, options) => {
     setOpenDraw(false);
@@ -616,6 +646,7 @@ const Whiteboard = ({
   const [openDraw, setOpenDraw] = useState(false);
   const [openThickness, setOpenThickness] = useState(false);
   const [openColor, setOpenColor] = useState(false);
+  const [zoomToggle, setZoomToggle] = useState(false);
 
   useEffect(() => {
     if (canvas) {
@@ -643,22 +674,18 @@ const Whiteboard = ({
       <canvas ref={canvasRef} id="canvas" />
       <div>
         <div>
-          { !pdf && (
             <div className={styles.nextFixedButton}>
-              {' '}
               <Button className={styles.floatingButtonsZoom} onClick={() => previousPage(canvas)}>
                 <ArrowBackIosNewIcon className={styles.blackIcon} />
               </Button>
               <p>
                 Page {index + 1} to {totalPages + 1}
               </p>
-              <Button className={styles.floatingButtonsZoom} disabled={pdfViewer && (index === totalPages)} onClick={() => nextPage(canvas)}>
+              <Button className={styles.floatingButtonsZoom} onClick={() => nextPage(canvas)}>
                 <ArrowForwardIosIcon className={styles.blackIcon} />
-              </Button>{' '}
+              </Button>
             </div>
-          )}
         </div>
-        {pdf && !pdfViewer && (
           <PDFCanvas
             setSubmitPdf={setSubmitPdf}
             next={() => nextPage(canvas)}
@@ -668,7 +695,6 @@ const Whiteboard = ({
             extend={() => extendPage(canvas)}
             revision={revision}
           />
-        )}
       </div>
       <div className={styles.toolbarWithColor} style={{ backgroundColor: 'transparent' }}>
         <div className={styles.toolbar}>
@@ -690,8 +716,8 @@ const Whiteboard = ({
                 <SpeedDial
                   open={openDraw}
                   onClick={() => {
-                    if(disableButtons)
-                    return;
+                    if (disableButtons)
+                      return;
                     setOpenDraw(!openDraw);
                     setOpenColor(false);
                     setOpenThickness(false);
@@ -876,7 +902,6 @@ const Whiteboard = ({
               />
           <div className={styles.upperToolBar}>
             <div className={styles.upperToolBarFlex}>
-                <WebsiteHeader/>
               <Button
                 className={!buttonFlag ? styles.disabledButton : ''}
                 onClick={() => {

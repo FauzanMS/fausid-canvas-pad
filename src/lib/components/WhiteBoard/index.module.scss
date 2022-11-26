@@ -63,6 +63,7 @@
   position:fixed;
   top:0;
   width:100%;
+  background-color:white;
   display: flex;
   justify-content:center;
 }
@@ -70,9 +71,8 @@
 .upperToolBarFlex{
   display: flex;
   justify-content:space-between;
-  align-items: center;
-  width:80%;
-  margin: auto;
+  max-width:400px;
+  width:100%;
 }
 
 .nextFixedButton{
@@ -87,7 +87,6 @@
   justify-content: center;
   align-items: center;
   background-color: white;
-
 }
 
 .zoomFixedButton{
