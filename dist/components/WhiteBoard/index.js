@@ -37,14 +37,6 @@ var _Group = _interopRequireDefault(require("./images/Group 6949.png"));
 
 var _disalbedSubmit = _interopRequireDefault(require("./images/disalbedSubmit.png"));
 
-var _disabledRevise = _interopRequireDefault(require("./images/disabledRevise.png"));
-
-var _Group2 = _interopRequireDefault(require("./images/Group 6948.png"));
-
-var _Group3 = _interopRequireDefault(require("./images/Group 6946.png"));
-
-var _Group4 = _interopRequireDefault(require("./images/Group 6947.png"));
-
 var _ArrowForwardIos = _interopRequireDefault(require("@mui/icons-material/ArrowForwardIos"));
 
 var _ArrowBackIosNew = _interopRequireDefault(require("@mui/icons-material/ArrowBackIosNew"));
@@ -67,15 +59,11 @@ var _SpeedDialIcon = _interopRequireDefault(require("@mui/material/SpeedDialIcon
 
 var _Slider = _interopRequireDefault(require("./components/Slider"));
 
-var _ZoomOutMap = _interopRequireDefault(require("@mui/icons-material/ZoomOutMap"));
-
-var _PdfReader = _interopRequireDefault(require("../PdfReader"));
-
 var _PdfCanvas = _interopRequireDefault(require("../PdfCanvas"));
 
-var _SearchOff = _interopRequireDefault(require("@mui/icons-material/SearchOff"));
-
 var _sweetalert = _interopRequireDefault(require("sweetalert"));
+
+var _WebsiteHeader = require("../WebsiteHeader");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -297,31 +285,6 @@ function createEllipse(canvas) {
       });
     });
     canvas.discardActiveObject().requestRenderAll();
-  }
-}
-
-function panningZoom(canvas) {
-  if (options.currentMode !== modes.PANNING) {
-    options.currentMode = modes.PANNING;
-    removeCanvasListener(canvas);
-    canvas.on('mouse:wheel', function (opt) {
-      if (!canvas.viewportTransform) {
-        return;
-      }
-
-      var evt = opt.e;
-      var deltaY = evt.deltaY;
-      var zoom = canvas.getZoom();
-      zoom = zoom - deltaY / 100;
-      if (zoom > 20) zoom = 20;
-      if (zoom < 0.1) zoom = 0.1;
-      canvas.zoomToPoint(new _fabric.fabric.Point(evt.offsetX, evt.offsetY), zoom);
-      opt.e.preventDefault();
-      opt.e.stopPropagation();
-    });
-  } else {
-    removeCanvasListener(canvas);
-    draw(canvas);
   }
 }
 
@@ -817,7 +780,7 @@ var Whiteboard = function Whiteboard(_ref9) {
     }
   }
 
-  var _React$useState = _react.default.useState(true),
+  var _React$useState = _react.default.useState(false),
       pdfViewer = _React$useState[0],
       setPdfViewer = _React$useState[1];
 
@@ -875,10 +838,6 @@ var Whiteboard = function Whiteboard(_ref9) {
       openColor = _useState12[0],
       setOpenColor = _useState12[1];
 
-  var _useState13 = (0, _react.useState)(false),
-      zoomToggle = _useState13[0],
-      setZoomToggle = _useState13[1];
-
   (0, _react.useEffect)(function () {
     if (canvas) {
       var center = canvas.getCenter();
@@ -907,7 +866,7 @@ var Whiteboard = function Whiteboard(_ref9) {
   }, /*#__PURE__*/_react.default.createElement("canvas", {
     ref: canvasRef,
     id: "canvas"
-  }), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", null, !pdfViewer && !pdf && /*#__PURE__*/_react.default.createElement("div", {
+  }), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", null, !pdf && /*#__PURE__*/_react.default.createElement("div", {
     className: _indexModule.default.nextFixedButton
   }, ' ', /*#__PURE__*/_react.default.createElement(_Button.default, {
     className: _indexModule.default.floatingButtonsZoom,
@@ -918,25 +877,13 @@ var Whiteboard = function Whiteboard(_ref9) {
     className: _indexModule.default.blackIcon
   })), /*#__PURE__*/_react.default.createElement("p", null, "Page ", index + 1, " to ", totalPages + 1), /*#__PURE__*/_react.default.createElement(_Button.default, {
     className: _indexModule.default.floatingButtonsZoom,
+    disabled: pdfViewer && index === totalPages,
     onClick: function onClick() {
       return nextPage(canvas);
     }
   }, /*#__PURE__*/_react.default.createElement(_ArrowForwardIos.default, {
     className: _indexModule.default.blackIcon
-  })), ' '), !pdfViewer && /*#__PURE__*/_react.default.createElement("div", {
-    className: _indexModule.default.zoomFixedButton
-  }, /*#__PURE__*/_react.default.createElement(_Button.default, {
-    onClick: function onClick() {
-      panningZoom(canvas, !zoomToggle);
-      setZoomToggle(!zoomToggle);
-    }
-  }, zoomToggle ? /*#__PURE__*/_react.default.createElement(_SearchOff.default, null) : /*#__PURE__*/_react.default.createElement(_ZoomOutMap.default, null)))), pdfViewer && /*#__PURE__*/_react.default.createElement(_PdfReader.default, {
-    savePage: function savePage() {
-      return nextPage(canvas);
-    },
-    fileReaderInfo: pdfUrl,
-    open: pdfViewer
-  }), pdf && !pdfViewer && /*#__PURE__*/_react.default.createElement(_PdfCanvas.default, {
+  })), ' ')), pdf && !pdfViewer && /*#__PURE__*/_react.default.createElement(_PdfCanvas.default, {
     setSubmitPdf: setSubmitPdf,
     next: function next() {
       return nextPage(canvas);
@@ -957,7 +904,7 @@ var Whiteboard = function Whiteboard(_ref9) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: _indexModule.default.toolbar
-  }, !pdfViewer && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Box.default, {
+  }, /*#__PURE__*/_react.default.createElement(_Box.default, {
     className: openThickness ? _indexModule.default.speeddialDivOpen : _indexModule.default.speeddialDivClose,
     style: {
       display: !buttonFlag ? "none" : "flex"
@@ -1166,38 +1113,11 @@ var Whiteboard = function Whiteboard(_ref9) {
       }))
     }),
     ariaLabel: "SpeedDial openIcon example"
-  })), /*#__PURE__*/_react.default.createElement("div", {
+  }), /*#__PURE__*/_react.default.createElement("div", {
     className: _indexModule.default.upperToolBar
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: _indexModule.default.upperToolBarFlex
-  }, !pdfViewer ? /*#__PURE__*/_react.default.createElement(_Button.default, null, /*#__PURE__*/_react.default.createElement(_Box.default, {
-    className: _indexModule.default.flexDiv,
-    onClick: function onClick() {
-      return setPdfViewer(true);
-    }
-  }, /*#__PURE__*/_react.default.createElement("img", {
-    src: _Group3.default
-  }))) : /*#__PURE__*/_react.default.createElement(_Button.default, null, /*#__PURE__*/_react.default.createElement(_Box.default, {
-    className: _indexModule.default.flexDiv,
-    onClick: function onClick() {
-      return setPdfViewer(false);
-    }
-  }, /*#__PURE__*/_react.default.createElement("img", {
-    src: _Group4.default
-  }))), resend && /*#__PURE__*/_react.default.createElement(_Button.default, {
-    className: !buttonFlag ? _indexModule.default.disabledButton : '',
-    onClick: function onClick() {
-      if (!buttonFlag) return;
-      setResendFiles(true);
-      onSaveCanvasAsImage(true);
-    }
-  }, /*#__PURE__*/_react.default.createElement(_Box.default, {
-    className: _indexModule.default.flexDiv
-  }, buttonFlag ? /*#__PURE__*/_react.default.createElement("img", {
-    src: _Group2.default
-  }) : /*#__PURE__*/_react.default.createElement("img", {
-    src: _disabledRevise.default
-  }))), /*#__PURE__*/_react.default.createElement(_Button.default, {
+  }, /*#__PURE__*/_react.default.createElement(_WebsiteHeader.WebsiteHeader, null), /*#__PURE__*/_react.default.createElement(_Button.default, {
     className: !buttonFlag ? _indexModule.default.disabledButton : '',
     onClick: function onClick() {
       if (!buttonFlag) return;

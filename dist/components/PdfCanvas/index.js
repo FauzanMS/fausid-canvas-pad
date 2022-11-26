@@ -9,9 +9,7 @@ var _entry = require("react-pdf/dist/esm/entry.webpack");
 
 var _reactPdf = require("react-pdf");
 
-var _indexModule = _interopRequireDefault(require("../PdfReader/index.module.scss"));
-
-var _indexModule2 = _interopRequireDefault(require("../WhiteBoard/index.module.scss"));
+var _indexModule = _interopRequireDefault(require("../WhiteBoard/index.module.scss"));
 
 var _ArrowForwardIos = _interopRequireDefault(require("@mui/icons-material/ArrowForwardIos"));
 
@@ -93,11 +91,11 @@ var PDFCanvas = function PDFCanvas(_ref) {
   };
 
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", {
-    className: _indexModule.default.fileContainer
+    className: styles.fileContainer
   }, spinnerValue && /*#__PURE__*/_react.default.createElement(_CircularProgress.default, {
     open: true
   }), /*#__PURE__*/_react.default.createElement(_entry.Document, {
-    className: _indexModule.default.document,
+    className: styles.document,
     file: fileCanvasInfo.file,
     onLoadSuccess: onDocumentLoadSuccess
   }, /*#__PURE__*/_react.default.createElement(_entry.Page, {
@@ -105,15 +103,15 @@ var PDFCanvas = function PDFCanvas(_ref) {
     onRenderSuccess: onRenderSuccess,
     pageNumber: fileCanvasInfo.currentPageNumber
   }))), /*#__PURE__*/_react.default.createElement("div", {
-    className: _indexModule2.default.nextFixedButton
+    className: _indexModule.default.nextFixedButton
   }, /*#__PURE__*/_react.default.createElement(_material.Button, {
-    className: _indexModule2.default.floatingButtonsZoom,
+    className: _indexModule.default.floatingButtonsZoom,
     disabled: fileCanvasInfo.currentPageNumber <= 1,
     onClick: previousPage
   }, /*#__PURE__*/_react.default.createElement(_ArrowBackIosNew.default, {
-    className: _indexModule2.default.blackIcon
+    className: _indexModule.default.blackIcon
   })), /*#__PURE__*/_react.default.createElement("p", null, "Page ", fileCanvasInfo.currentPageNumber, " of ", totalIndex || '--'), /*#__PURE__*/_react.default.createElement(_material.Button, {
-    className: _indexModule2.default.floatingButtonsZoom,
+    className: _indexModule.default.floatingButtonsZoom,
     disabled: fileCanvasInfo.currentPageNumber >= fileCanvasInfo.totalPages && !revision,
     onClick: nextPage
   }, /*#__PURE__*/_react.default.createElement(_ArrowForwardIos.default, null))));
