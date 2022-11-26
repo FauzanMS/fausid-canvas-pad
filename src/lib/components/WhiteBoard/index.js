@@ -570,7 +570,7 @@ const Whiteboard = ({
     }
   }
 
-  const [pdfViewer, setPdfViewer] = React.useState(true);
+  const [pdfViewer, setPdfViewer] = React.useState(false);
 
   const toolbarCommander = (props, canvas, options) => {
     setOpenDraw(false);
