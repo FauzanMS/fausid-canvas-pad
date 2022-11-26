@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
 import getCursor from './cursors';
@@ -15,8 +15,6 @@ import RotateLeft from './images/rotate-ccw@3x.png';
 import RotateRight from './images/rotate-cw@3x.png';
 import submit from './images/Group 6949.png';
 import disabledSubmit from './images/disalbedSubmit.png';
-import preview from './images/Group 6946.png';
-import canvasIcon from './images/Group 6947.png';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
