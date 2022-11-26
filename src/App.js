@@ -19,9 +19,6 @@ const App = () => {
       saveAs(Object.values(files)[i], `page${i+1}.png`);
       }
     }
-
-    if (Object.values(files).length >0)
-    window.location.reload();
   },[files, resendFiles])
 
   const color = [
