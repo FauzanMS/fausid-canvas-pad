@@ -674,232 +674,232 @@ const Whiteboard = ({
       <canvas ref={canvasRef} id="canvas" />
       <div>
         <div>
-            <div className={styles.nextFixedButton}>
-              <Button className={styles.floatingButtonsZoom} onClick={() => previousPage(canvas)}>
-                <ArrowBackIosNewIcon className={styles.blackIcon} />
-              </Button>
-              <p>
-                Page {index + 1} to {totalPages + 1}
-              </p>
-              <Button className={styles.floatingButtonsZoom} onClick={() => nextPage(canvas)}>
-                <ArrowForwardIosIcon className={styles.blackIcon} />
-              </Button>
-            </div>
+          <div className={styles.nextFixedButton}>
+            <Button className={styles.floatingButtonsZoom} onClick={() => previousPage(canvas)}>
+              <ArrowBackIosNewIcon className={styles.blackIcon} />
+            </Button>
+            <p>
+              Page {index + 1} to {totalPages + 1}
+            </p>
+            <Button className={styles.floatingButtonsZoom} onClick={() => nextPage(canvas)}>
+              <ArrowForwardIosIcon className={styles.blackIcon} />
+            </Button>
+          </div>
         </div>
-          <PDFCanvas
-            setSubmitPdf={setSubmitPdf}
-            next={() => nextPage(canvas)}
-            back={() => previousPage(canvas)}
-            fileCanvasInfo={fileCanvasInfo}
-            updateFileCanvasInfo={updateFileCanvasInfo}
-            extend={() => extendPage(canvas)}
-            revision={revision}
-          />
+        <PDFCanvas
+          setSubmitPdf={setSubmitPdf}
+          next={() => nextPage(canvas)}
+          back={() => previousPage(canvas)}
+          fileCanvasInfo={fileCanvasInfo}
+          updateFileCanvasInfo={updateFileCanvasInfo}
+          extend={() => extendPage(canvas)}
+          revision={revision}
+        />
       </div>
       <div className={styles.toolbarWithColor} style={{ backgroundColor: 'transparent' }}>
         <div className={styles.toolbar}>
-              <Box className={openThickness ? styles.speeddialDivOpen : styles.speeddialDivClose} style={{ display: !buttonFlag ? "none" : "flex" }}>
-                <Button
-                  className={styles.buttonThick}
-                  onClick={() => setOpenThickness(!openThickness)}
-                  disabled={disableButtons}
-                >
-                  <LineWeightIcon />
-                </Button>
-                <InputSlider
-                  changeHandler={(v) => changeCurrentWidth(v)}
-                  open={openThickness && !openDraw && !openColor}
-                  value={options.currentWidth}
+          <Box className={openThickness ? styles.speeddialDivOpen : styles.speeddialDivClose} style={{ display: !buttonFlag ? "none" : "flex" }}>
+            <Button
+              className={styles.buttonThick}
+              onClick={() => setOpenThickness(!openThickness)}
+              disabled={disableButtons}
+            >
+              <LineWeightIcon />
+            </Button>
+            <InputSlider
+              changeHandler={(v) => changeCurrentWidth(v)}
+              open={openThickness && !openDraw && !openColor}
+              value={options.currentWidth}
+            />
+          </Box>
+          <Box className={openDraw ? styles.speeddialDivOpen : styles.speeddialDivClose} style={{ display: !buttonFlag ? "none" : "flex" }}>
+            <SpeedDial
+              open={openDraw}
+              onClick={() => {
+                if (disableButtons)
+                  return;
+                setOpenDraw(!openDraw);
+                setOpenColor(false);
+                setOpenThickness(false);
+              }}
+              direction="up"
+              ariaLabel="SpeedDial openIcon example"
+              icon={
+                <SpeedDialIcon
+                  icon={
+                    <Box className={styles.flexDiv}>
+                      <img src={Pencil} />
+                    </Box>
+                  }
                 />
-              </Box>
-              <Box className={openDraw ? styles.speeddialDivOpen : styles.speeddialDivClose} style={{ display: !buttonFlag ? "none" : "flex" }}>
-                <SpeedDial
-                  open={openDraw}
-                  onClick={() => {
-                    if (disableButtons)
-                      return;
-                    setOpenDraw(!openDraw);
-                    setOpenColor(false);
-                    setOpenThickness(false);
-                  }}
-                  direction="up"
-                  ariaLabel="SpeedDial openIcon example"
+              }
+            >
+              <SpeedDialAction
+                FabProps={{
+                  style: {
+                    boxShadow: 'none',
+                  },
+                }}
+                icon={<HorizontalRuleIcon className={styles.blackSlantedIcon} />}
+                tooltipTitle="Line"
+                onClick={() => toolbarCommander(modes.LINE, canvas)}
+              />
+              <SpeedDialAction
+                FabProps={{
+                  style: {
+                    boxShadow: 'none',
+                  },
+                }}
+                icon={<Crop169Icon className={styles.blackIcon} />}
+                tooltipTitle="Rectangle"
+                onClick={() => toolbarCommander(modes.RECTANGLE, canvas)}
+              />
+              <SpeedDialAction
+                FabProps={{
+                  style: {
+                    boxShadow: 'none',
+                  },
+                }}
+                icon={<RadioButtonUncheckedIcon className={styles.blackIcon} />}
+                tooltipTitle="Ellipse"
+                onClick={() => toolbarCommander(modes.ELLIPSE, canvas)}
+              />
+              <SpeedDialAction
+                FabProps={{
+                  style: {
+                    boxShadow: 'none',
+                  },
+                }}
+                icon={<ChangeHistoryIcon className={styles.blackIcon} />}
+                tooltipTitle="Triangle"
+                onClick={() => toolbarCommander(modes.TRIANGLE, canvas, options)}
+              />
+              <SpeedDialAction
+                FabProps={{
+                  style: {
+                    boxShadow: 'none',
+                  },
+                }}
+                icon={<CreateIcon className={styles.blackIcon} />}
+                tooltipTitle="Pencil"
+                onClick={() => toolbarCommander(modes.PENCIL, canvas)}
+              />
+              <SpeedDialAction
+                FabProps={{
+                  style: {
+                    boxShadow: 'none',
+                  },
+                }}
+                icon={<TitleRoundedIcon className={styles.blackIcon} />}
+                tooltipTitle="Text"
+                onClick={() => toolbarCommander('TEXT', canvas)}
+              />
+            </SpeedDial>
+          </Box>
+          <Box
+            style={{ display: !buttonFlag ? "none" : "flex" }}
+            className={openColor ? styles.speeddialColorDivOpen : styles.speeddialColorDivClose}
+          >
+            <SpeedDial
+              open={openColor}
+              onClick={() => {
+                if (disableButtons)
+                  return;
+                setOpenColor(!openColor);
+                setOpenDraw(false);
+                setOpenThickness(false);
+              }}
+              direction="up"
+              ariaLabel="SpeedDial openIcon example"
+              icon={
+                <SpeedDialIcon
                   icon={
-                    <SpeedDialIcon
-                      icon={
-                        <Box className={styles.flexDiv}>
-                          <img src={Pencil} />
-                        </Box>
-                      }
-                    />
+                    <Box className={styles.flexDiv}>
+                      <img src={Brush} />
+                    </Box>
                   }
-                >
-                  <SpeedDialAction
-                    FabProps={{
-                      style: {
-                        boxShadow: 'none',
-                      },
-                    }}
-                    icon={<HorizontalRuleIcon className={styles.blackSlantedIcon} />}
-                    tooltipTitle="Line"
-                    onClick={() => toolbarCommander(modes.LINE, canvas)}
-                  />
-                  <SpeedDialAction
-                    FabProps={{
-                      style: {
-                        boxShadow: 'none',
-                      },
-                    }}
-                    icon={<Crop169Icon className={styles.blackIcon} />}
-                    tooltipTitle="Rectangle"
-                    onClick={() => toolbarCommander(modes.RECTANGLE, canvas)}
-                  />
-                  <SpeedDialAction
-                    FabProps={{
-                      style: {
-                        boxShadow: 'none',
-                      },
-                    }}
-                    icon={<RadioButtonUncheckedIcon className={styles.blackIcon} />}
-                    tooltipTitle="Ellipse"
-                    onClick={() => toolbarCommander(modes.ELLIPSE, canvas)}
-                  />
-                  <SpeedDialAction
-                    FabProps={{
-                      style: {
-                        boxShadow: 'none',
-                      },
-                    }}
-                    icon={<ChangeHistoryIcon className={styles.blackIcon} />}
-                    tooltipTitle="Triangle"
-                    onClick={() => toolbarCommander(modes.TRIANGLE, canvas, options)}
-                  />
-                  <SpeedDialAction
-                    FabProps={{
-                      style: {
-                        boxShadow: 'none',
-                      },
-                    }}
-                    icon={<CreateIcon className={styles.blackIcon} />}
-                    tooltipTitle="Pencil"
-                    onClick={() => toolbarCommander(modes.PENCIL, canvas)}
-                  />
-                  <SpeedDialAction
-                    FabProps={{
-                      style: {
-                        boxShadow: 'none',
-                      },
-                    }}
-                    icon={<TitleRoundedIcon className={styles.blackIcon} />}
-                    tooltipTitle="Text"
-                    onClick={() => toolbarCommander('TEXT', canvas)}
-                  />
-                </SpeedDial>
-              </Box>
-              <Box
-                style={{ display: !buttonFlag ? "none" : "flex" }}
-                className={openColor ? styles.speeddialColorDivOpen : styles.speeddialColorDivClose}
-              >
-                <SpeedDial
-                  open={openColor}
+                />
+              }
+            >
+              {color.map((col) => (
+                <SpeedDialAction
+                  key={col.color}
+                  FabProps={{
+                    style: {
+                      background: col.color,
+                      boxShadow: currColor === col.color && '0 0 10px black',
+                    },
+                  }}
+                  className="floating_buttons"
+                  tooltipTitle={col.title}
                   onClick={() => {
-                    if (disableButtons)
-                      return;
+                    changeCurrentColor(col.color);
                     setOpenColor(!openColor);
-                    setOpenDraw(false);
-                    setOpenThickness(false);
                   }}
-                  direction="up"
-                  ariaLabel="SpeedDial openIcon example"
-                  icon={
-                    <SpeedDialIcon
-                      icon={
-                        <Box className={styles.flexDiv}>
-                          <img src={Brush} />
-                        </Box>
-                      }
-                    />
-                  }
-                >
-                  {color.map((col) => (
-                    <SpeedDialAction
-                      key={col.color}
-                      FabProps={{
-                        style: {
-                          background: col.color,
-                          boxShadow: currColor === col.color && '0 0 10px black',
-                        },
-                      }}
-                      className="floating_buttons"
-                      tooltipTitle={col.title}
-                      onClick={() => {
-                        changeCurrentColor(col.color);
-                        setOpenColor(!openColor);
-                      }}
-                    ></SpeedDialAction>
-                  ))}
-                </SpeedDial>
-              </Box>
-              <SpeedDial
-                open={false}
-                style={{ display: !buttonFlag ? "none" : "flex" }}
-                onClick={() => {
-                  if (disableButtons)
-                    return;
-                  toolbarCommander(modes.ERASER, canvas);
-                }}
-                direction="up"
+                ></SpeedDialAction>
+              ))}
+            </SpeedDial>
+          </Box>
+          <SpeedDial
+            open={false}
+            style={{ display: !buttonFlag ? "none" : "flex" }}
+            onClick={() => {
+              if (disableButtons)
+                return;
+              toolbarCommander(modes.ERASER, canvas);
+            }}
+            direction="up"
+            icon={
+              <SpeedDialIcon
                 icon={
-                  <SpeedDialIcon
-                    icon={
-                      <Box className={styles.flexDiv}>
-                        <img src={EraserIcon} />
-                      </Box>
-                    }
-                  />
-                }
-                ariaLabel="SpeedDial openIcon example"
-              />
-              <SpeedDial
-                open={false}
-                style={{ display: !buttonFlag ? "none" : "flex" }}
-                onClick={() => {
-                  if (disableButtons)
-                    return;
-                  undoCanvas(canvas);
-                }}
-                direction="up"
-                ariaLabel="SpeedDial openIcon example"
-                icon={
-                  <SpeedDialIcon
-                    icon={
-                      <Box className={styles.flexDiv}>
-                        <img src={RotateLeft} />
-                      </Box>
-                    }
-                  />
+                  <Box className={styles.flexDiv}>
+                    <img src={EraserIcon} />
+                  </Box>
                 }
               />
-              <SpeedDial
-                open={false}
-                style={{ display: !buttonFlag ? "none" : "flex" }}
-                onClick={() => {
-                  if (disableButtons)
-                    return;
-                  redoCanvas(canvas);
-                }}
-                direction="up"
+            }
+            ariaLabel="SpeedDial openIcon example"
+          />
+          <SpeedDial
+            open={false}
+            style={{ display: !buttonFlag ? "none" : "flex" }}
+            onClick={() => {
+              if (disableButtons)
+                return;
+              undoCanvas(canvas);
+            }}
+            direction="up"
+            ariaLabel="SpeedDial openIcon example"
+            icon={
+              <SpeedDialIcon
                 icon={
-                  <SpeedDialIcon
-                    icon={
-                      <Box className={styles.flexDiv}>
-                        <img src={RotateRight} />
-                      </Box>
-                    }
-                  />
+                  <Box className={styles.flexDiv}>
+                    <img src={RotateLeft} />
+                  </Box>
                 }
-                ariaLabel="SpeedDial openIcon example"
               />
+            }
+          />
+          <SpeedDial
+            open={false}
+            style={{ display: !buttonFlag ? "none" : "flex" }}
+            onClick={() => {
+              if (disableButtons)
+                return;
+              redoCanvas(canvas);
+            }}
+            direction="up"
+            icon={
+              <SpeedDialIcon
+                icon={
+                  <Box className={styles.flexDiv}>
+                    <img src={RotateRight} />
+                  </Box>
+                }
+              />
+            }
+            ariaLabel="SpeedDial openIcon example"
+          />
           <div className={styles.upperToolBar}>
             <div className={styles.upperToolBarFlex}>
               <Button

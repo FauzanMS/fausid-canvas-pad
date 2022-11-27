@@ -3,28 +3,24 @@ import { Whiteboard } from './lib';
 import { saveAs } from 'file-saver';
 import styles from './app.module.scss';
 
+
+
 const App = () => {
   const [files, setFiles] = React.useState({});
   const [resendFiles, setResendFiles] = React.useState(false);
 
-  const [canvasJSON, setCanvasJSON] = React.useState({});
+  const [screenWidth, setScreenWidth] = React.useState(1424);
 
-  let source = "https://i.postimg.cc/Dw97bv23/image-7.png";
+  const [canvasJSON, setCanvasJSON] = React.useState([]);
+
 
   React.useEffect(() => {
-    if (Object.values(files).length > 0) {
-      if (resendFiles) {
+    console.log(JSON.stringify(canvasJSON));
+  }, [canvasJSON]);
 
-      }
-      console.log(Object.values(files));
-      for (let i = 0; i < Object.values(files).length; i++) {
-        saveAs(Object.values(files)[i], `page${i + 1}.png`);
-      }
-    }
-
-    if (Object.values(files).length > 0)
-      window.location.reload();
-  }, [files, resendFiles]);
+  React.useEffect(() => {
+    console.log(screenWidth);
+  }, [screenWidth]);
 
   const color = [
     {
@@ -59,17 +55,14 @@ const App = () => {
       title: 'blue',
       color: '#021ff7'
     },
-  ]
-
-  const width = window.innerWidth > 610 ? 610 : window.innerWidth;
-  const height = window.innerHeight > 670 ? 670 : window.innerHeight;
+  ];
 
   const pdfUrl = "";
 
   return (
     <div className={styles.app}>
       <main>
-        <Whiteboard aspectRatio={width / (height)} pdf="" setFiles={setFiles} setResendFiles={setResendFiles} color={color} setJSON={setCanvasJSON} pdfUrl={pdfUrl} resend={true} revision={false} buttonFlag={true} />
+        <Whiteboard aspectRatio={4 / 6} pdf={""} setFiles={setFiles} setResendFiles={setResendFiles} color={color} json={canvasJSON} setJSON={setCanvasJSON} jsonScreenWidth={screenWidth} setJSONScreenWidth={setScreenWidth} pdfUrl={pdfUrl} resend={true} revision={false} buttonFlag={true}  />
       </main>
     </div>
   );

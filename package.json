@@ -1,5 +1,5 @@
 {
-  "name": "fausid-canvas-pad",
+  "name": "react-fabricjs-whiteboard",
   "version": "1.1.14",
   "description": "React whiteboard with PDF reader",
   "author": "Fauzan Siddiqui",
@@ -52,8 +52,8 @@
     "react-scripts": "4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
     "build-npm": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files",
     "test": "react-scripts test"
   },
