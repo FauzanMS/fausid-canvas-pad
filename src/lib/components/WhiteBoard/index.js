@@ -603,6 +603,7 @@ const Whiteboard = ({
   const [pdfViewer, setPdfViewer] = React.useState(true);
 
   const toolbarCommander = (props, canvas, options) => {
+    console.log('clicked', props);
     setOpenDraw(false);
     switch (props) {
       case modes.LINE:

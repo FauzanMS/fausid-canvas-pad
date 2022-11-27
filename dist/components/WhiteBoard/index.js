@@ -822,6 +822,7 @@ var Whiteboard = function Whiteboard(_ref9) {
       setPdfViewer = _React$useState[1];
 
   var toolbarCommander = function toolbarCommander(props, canvas, options) {
+    console.log('clicked', props);
     setOpenDraw(false);
 
     switch (props) {
