@@ -822,7 +822,6 @@ var Whiteboard = function Whiteboard(_ref9) {
       setPdfViewer = _React$useState[1];
 
   var toolbarCommander = function toolbarCommander(props, canvas, options) {
-    console.log('clicked', props);
     setOpenDraw(false);
 
     switch (props) {
@@ -875,10 +874,6 @@ var Whiteboard = function Whiteboard(_ref9) {
   var _useState12 = (0, _react.useState)(false),
       openColor = _useState12[0],
       setOpenColor = _useState12[1];
-
-  var _useState13 = (0, _react.useState)(false),
-      zoomToggle = _useState13[0],
-      setZoomToggle = _useState13[1];
 
   (0, _react.useEffect)(function () {
     if (canvas) {
@@ -1062,13 +1057,27 @@ var Whiteboard = function Whiteboard(_ref9) {
     onClick: function onClick() {
       return toolbarCommander('TEXT', canvas);
     }
-  }))), /*#__PURE__*/_react.default.createElement(_Box.default, {
+  }))), /*#__PURE__*/_react.default.createElement("input", {
+    style: {
+      display: "none"
+    },
+    onChange: function onChange(e) {
+      return changeCurrentColor(e.target.value);
+    },
+    type: "color",
+    id: "favcolor",
+    name: "favcolor",
+    value: "#ff0000"
+  }), /*#__PURE__*/_react.default.createElement(_Box.default, {
     style: {
       display: !buttonFlag ? "none" : "flex"
     },
     className: openColor ? _indexModule.default.speeddialColorDivOpen : _indexModule.default.speeddialColorDivClose
   }, /*#__PURE__*/_react.default.createElement(_SpeedDial.default, {
     open: openColor,
+    onDoubleClick: function onDoubleClick() {
+      return document.getElementById("favcolor").click();
+    },
     onClick: function onClick() {
       if (disableButtons) return;
       setOpenColor(!openColor);
@@ -1158,7 +1167,7 @@ var Whiteboard = function Whiteboard(_ref9) {
     className: _indexModule.default.upperToolBar
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: _indexModule.default.upperToolBarFlex
-  }, /*#__PURE__*/_react.default.createElement(_Button.default, {
+  }, /*#__PURE__*/_react.default.createElement("h2", null, "FauSid Doodle App \uD83E\uDD79"), /*#__PURE__*/_react.default.createElement(_Button.default, {
     className: !buttonFlag ? _indexModule.default.disabledButton : '',
     onClick: function onClick() {
       if (!buttonFlag) return;

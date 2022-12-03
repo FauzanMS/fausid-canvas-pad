@@ -603,7 +603,6 @@ const Whiteboard = ({
   const [pdfViewer, setPdfViewer] = React.useState(true);
 
   const toolbarCommander = (props, canvas, options) => {
-    console.log('clicked', props);
     setOpenDraw(false);
     switch (props) {
       case modes.LINE:
@@ -647,7 +646,6 @@ const Whiteboard = ({
   const [openDraw, setOpenDraw] = useState(false);
   const [openThickness, setOpenThickness] = useState(false);
   const [openColor, setOpenColor] = useState(false);
-  const [zoomToggle, setZoomToggle] = useState(false);
 
   useEffect(() => {
     if (canvas) {
@@ -797,12 +795,14 @@ const Whiteboard = ({
               />
             </SpeedDial>
           </Box>
+          <input style={{ display: "none" }} onChange={(e) => changeCurrentColor(e.target.value)} type="color" id="favcolor" name="favcolor" value="#ff0000" />
           <Box
             style={{ display: !buttonFlag ? "none" : "flex" }}
             className={openColor ? styles.speeddialColorDivOpen : styles.speeddialColorDivClose}
           >
             <SpeedDial
               open={openColor}
+              onDoubleClick={() => document.getElementById("favcolor").click()}
               onClick={() => {
                 if (disableButtons)
                   return;
@@ -903,6 +903,7 @@ const Whiteboard = ({
           />
           <div className={styles.upperToolBar}>
             <div className={styles.upperToolBarFlex}>
+              <h2>FauSid Doodle App 🥹</h2>
               <Button
                 className={!buttonFlag ? styles.disabledButton : ''}
                 onClick={() => {
